@@ -1,0 +1,115 @@
+###TAB=Dependencies
+
+Python 3.5
+Matplotlib 1.5.1
+Numpy 1.11.0
+
+You'll need these 3 packages at a minimum; I forget if matplotlib or numpy install other things that they themselves need, but I'm sure they'll tell you.
+Slightly different variations in versions may work as well.
+
+###TAB=Using AIM
+
+To run the program:
+$ python3 app.py
+
+(that is, run with python version 3). Or you can run it inside your favorite Python editor.
+
+
+This app is based on the book "How to Make $1,000,000 in the Stock Market Automatically", by Robert Lichello. Lichello called his algorithm "AIM" (Automatic Investment Management"), hence the name of the program.
+
+The idea is to start with an initial investment, say $10000, and split that into 2 pieces: 1) $5000 cash, and 2) $5000 in stock.
+After that, for each new stock price fed into the AIM 'machine', it advises whether to hold, buy or sell. Note that the algorithm itself divides the initial investment in half and makes the initial stock purchase; you just have to supply the total initial investment amount.
+
+This program is meant to test out that algorithm (and possibly others) using historical stock data from Yahoo, crunching the numbers to see how much money would be gained or lost. The algorithm works best for volatile stocks.
+It splits each algorithm out into it's own file (algo1.py through algo4.py). The GUI is laid out with tk's grid mechanism, which means it is a series of rows and columns (4 columns are used).
+
+
+Basically, to use the program:
+- Fill out the stock symbol, start and end dates, and starting investment.
+- Select the algorithm.
+- Hit the "Run Selected Algorithm" button (or hit RETURN).
+
+
+Some abbreviations and terms explained:
+- Portfolio Value - the total of all cash plus all stock on hand at a particular instant.
+- Stock Value - the value of all stock shares you own at a particular instant.
+- ROI - Return On Investment - the annualized percentage return you would have gotten had you used the algorithm selected, on the stock selected, with the starting investment, between the start and end dates.
+- SAFE - A safety factor Lichello put into his algorithm to prevent buying and selling too much at one time. He set his to 10%; that is, the buy/sell advice had to exceed 10% of the current stock value or the order would be discarded. Then, he would reduce the order by that percent also.
+- Threshold - Designed to eliminate tiny orders; orders below this dollar amount are thrown away.
+
+
+The GUI has these fields:
+- Stock symbol - enter a valid stock symbol; if invalid, an error message will appear when the algorithm runs saying it cannot get data from the Internet. You would also get this error if your Internet connection is down.
+- Start date - starting date of the time period to test; format is "mm-dd-yyyy" or "mm/dd/yyyy".
+- End date - ending date of the time period to test; same format as start date.
+- Starting Investment - Initial cash you start with. 50% of this amount will be used for the initial stock buy; the rest is held as cash.
+
+- Num Data Points - Number of trading days between the start and end dates (as shown on the graph).
+- Ending Portfolio Value - After all calculations are done for the entire time period, this is the ending portfolio value (total of all cash + all stock shares owned).
+- Ending Stock Value - After all calculations are done for the entire time period, this is the ending stock value of all shares owned.
+- Ending Cash - After all calculations are done for the entire time period, this is the ending amount of cash left.
+- Num Transactions - Number of transactions - number of buys/sells that occurred during the last run.
+- Starting Shares - Half of the starting investment is used to buy shares at the stock price on the start date. This is the number of shares that you buy on that day.
+- Ending Shares - The number of stock shares you have on the end date, after all calculations are done.
+- Annual ROI - the annualized percentage return you would have gotten had you used the algorithm selected, on the stock selected, with the starting investment, between the start and end dates.
+- Run Selected Algorithm - A button that causes the program to run, using the selected algorithm and other parameters entered like stock symbol, start/end dates, and initial investment.
+
+- Algo 1 - Original AIM - First of four algorithm buttons (one can be selected at a time). Runs the original AIM algorithm from the book.
+- Algo 2 - Modified AIM - Second of four algorithm buttons. Runs a modified version of the AIM algorithm that I came up with. Comments in algo2.py explain the changes.
+- Algo 3 - Third of four algorithm buttons. Runs code in algo3.py, which currently just returns (does nothing).
+- Algo 4 - Fourth of four algorithm buttons. Runs code in algo4.py, which currently just returns (does nothing).
+- Calc Optimum SAFE Value - This will run the entire selected algorithm in a loop, changing the SAFE value from 0% to 15% in 0.1% steps. It will save and then display the 'best' safe value (highest Annual ROI) in the green box below, and refresh the graph and all calculated values with that best SAFE value.
+- Calc Optimum Threshold Value - Same as above except it loops through threshold values from $0 to $500 in $5 increments.
+- [There are 2 other buttons that are not used yet but could be used for any of the 4 algorithms]
+- 4 edit boxes (green and grey boxes) - These are 4 parameters that each algorithm can use as it needs. The 2 implemented algorithms both use the 1st edit box as the desired SAFE parameter, and the 2nd box as the threshold parameter. Green just means used; grey means not used.
+
+- Plot checkboxes - You can individually turn on/off these plots. They are averages of the data (so for each plot point in the graph (each trading day), the 5 day average averages 2 days prior, 2 days after, and the day of). The rest of the plots are really 11, 21, 41, etc, but I thought that might look confusing so I rounded off.
+- The last line above the plot is a comment indicating what the parameters represent.
+
+Plot:
+- Blue solid line - the stock price on each day; legend is also blue and is on the left hand side.
+- Red dashed line - the portfolio value on each day; legend is also red and is on the right hand side.
+- Green dots - the value of a trade on any given day; most days don't trade, so the dot is at $0.0. A dot above $0 means a stock sale, a dot below $0 means a stock buy. The legend is green, and on the far right.
+
+
+Report bugs/comments/suggestions to don@zobasoft.biz.
+
+###TAB=History
+
+I first read the book "How to Make $1,000,000 in the Stock Market Automatically", by Robert Lichello, in the early 1980s and recognized that his algorithm could be coded up. I did that, played around a bit with it, but left the printout sit in a file folder for a few decades. Meanwhile, in 2001, Lichello updated his book and added some new material (none of which affects the algorithm I use). He passed away shortly thereafter, also in 2001. 
+
+Lichello called his algorithm "AIM" (Automatic Investment Management"), the idea being that once a month you would feed the stock price into the algorithm and it would crank out either a buy order, a sell order, or say to do nothing.
+
+Around 2013, I started an iPhone app to use the AIM algorithm. I never released this to the public because I thought I would get sued out of existence since it explicitly advises to buy or sell 'x' number of shares. It also didn't seem to be working very well, and I needed some way to test it.
+
+In May 2016, I started this project in order to easily push historical stock data into AIM and see how it performed. The core code took about 1 month to write. I then experimented with other algorithms, had some success, but didn't pursue it because no algorithm really worked all the time. The modified AIM algorithm seems to work better than the original in many cases.
+
+This app is a cleaned up version (for public consumption), with my experimental algorithms ripped out, but the original and modified AIM algorithms left intact. Feel free to experiment with your own algorithms in algo3.py and algo4.py. It is written in Python and uses matplotlib for plotting and tk/ttk for the GUI controls and layout.
+
+This 'help' code was added in Feb 2017.
+
+
+###TAB=Credits
+
+1. The MVC template was taken from:
+
+https://sukhbinder.wordpress.com/2014/12/25/an-example-of-model-view-controller-design-pattern-with-tkinter-python/
+
+2. The simple dialog code was taken from:
+
+http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+
+3. "How to Make $1,000,000 in the Stock Market Automatically", copyright 1977, 1980 by Robert Lichello, published by New American Library, ISBN 0-451-13368-4.
+
+The 2001 updated Fourth Edition of the book is ISBN 0-451-20441-7.
+
+4. Author of this application: 
+
+Don Lilly
+Report bugs/comments/suggestions to don@zobasoft.biz.
+
+###TAB=License
+
+This software is covered under the MIT license.
+
+See the file "LICENSE.txt" included with this distribution.
