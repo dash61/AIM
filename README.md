@@ -1,4 +1,4 @@
-== Overview
+## Overview
 
 This sample Python application was developed to test out certain stock algorithms. It has two implemented algorithms, the first taken from the book "How to Make $1,000,000 in the Stock Market Automatically", by Robert Lichello. The second is just a variation of that.
 
@@ -13,7 +13,7 @@ It splits each algorithm out into it's own file (algo1.py through algo4.py). The
 There is a help button that brings up a multi-tabbed help dialog with more specific information.
 
 
-=== Basic Usage
+### Basic Usage
 
 To run the program:
 $ python3 app.py
