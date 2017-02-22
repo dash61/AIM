@@ -21,6 +21,6 @@ $ python3 app.py
 (that is, run with python version 3). Or you can run it inside your favorite Python editor.
 
 To use the program:
-- Fill out the stock symbol, start and end dates, and starting investment.
-- Select the algorithm.
-- Hit the "Run Selected Algorithm" button (or hit RETURN).
+* Fill out the stock symbol, start and end dates, and starting investment.
+* Select the algorithm.
+* Hit the "Run Selected Algorithm" button (or hit RETURN).
