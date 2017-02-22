@@ -16,11 +16,13 @@ There is a help button that brings up a multi-tabbed help dialog with more speci
 ### Basic Usage
 
 To run the program:
-$ python3 app.py
+
+- $ python3 app.py
 
 (that is, run with python version 3). Or you can run it inside your favorite Python editor.
 
 To use the program:
-* Fill out the stock symbol, start and end dates, and starting investment.
-* Select the algorithm.
-* Hit the "Run Selected Algorithm" button (or hit RETURN).
+
+- Fill out the stock symbol, start and end dates, and starting investment.
+- Select the algorithm.
+- Hit the "Run Selected Algorithm" button (or hit RETURN).
