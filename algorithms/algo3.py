@@ -1,5 +1,8 @@
-#!/usr/bin/python
-# -*- coding: utf-8
+"""
+Third algorithm function for application.
+
+Fill in your own algorithmic code here.
+"""
 
 def calculate3(self):
-	return False
+    return False

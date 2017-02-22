@@ -1,88 +1,89 @@
-#!/usr/bin/python
-# -*- coding: utf-8
+"""
+A class for a generic dialog.
 
-# From:  http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+From:  http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+"""
 
-from tkinter import *
-import os
+from tkinter import Toplevel, Frame, Button, ACTIVE, LEFT
+#import os
 
 class Dialog(Toplevel):
 
-	def __init__(self, parent, title = None, filename = None):
-		Toplevel.__init__(self, parent)
-		self.transient(parent)
-		self.filename = ""
+    def __init__(self, parent, title=None, filename=None):
+        Toplevel.__init__(self, parent)
+        self.transient(parent)
+        self.filename = ""
 
-		if title:
-			self.title(title)
+        if title:
+            self.title(title)
 
-		if filename:
-			self.filename = filename
-			
-		self.parent = parent
-		self.result = None
+        if filename:
+            self.filename = filename
 
-		body = Frame(self)
-		self.initial_focus = self.body(body)
-		body.pack(padx=5, pady=5)
-		self.buttonbox()
+        self.parent = parent
+        self.result = None
 
-		self.grab_set()
+        body = Frame(self)
+        self.initial_focus = self.body(body)
+        body.pack(padx=5, pady=5)
+        self.buttonbox()
 
-		if not self.initial_focus:
-			self.initial_focus = self
+        self.grab_set()
 
-		self.protocol("WM_DELETE_WINDOW", self.cancel)
-		self.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+50))
+        if not self.initial_focus:
+            self.initial_focus = self
 
-		self.initial_focus.focus_set()
-		self.wait_window(self)
+        self.protocol("WM_DELETE_WINDOW", self.cancel)
+        self.geometry("+%d+%d" % (parent.winfo_rootx()+50, parent.winfo_rooty()+50))
 
-	#
-	# construction hooks
-	def body(self, master):
-		# create dialog body.  return widget that should have
-		# initial focus.  this method should be overridden
-		pass
+        self.initial_focus.focus_set()
+        self.wait_window(self)
 
-	def buttonbox(self):
-		# add standard button box. override if you don't want the
-		# standard buttons
-		box = Frame(self)
+    #
+    # construction hooks
+    def body(self, master):
+        # create dialog body.  return widget that should have
+        # initial focus.  this method should be overridden
+        pass
 
-		w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
-		w.pack(side=LEFT, padx=5, pady=5)
-		w = Button(box, text="Cancel", width=10, command=self.cancel)
-		w.pack(side=LEFT, padx=5, pady=5)
+    def buttonbox(self):
+        # add standard button box. override if you don't want the
+        # standard buttons
+        box = Frame(self)
 
-		self.bind("<Return>", self.ok)
-		self.bind("<Escape>", self.cancel)
+        w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
+        w.pack(side=LEFT, padx=5, pady=5)
+        w = Button(box, text="Cancel", width=10, command=self.cancel)
+        w.pack(side=LEFT, padx=5, pady=5)
 
-		box.pack()
+        self.bind("<Return>", self.ok)
+        self.bind("<Escape>", self.cancel)
 
-	#
-	# standard button semantics
-	def ok(self, event=None):
-		if not self.validate():
-				self.initial_focus.focus_set() # put focus back
-				return
+        box.pack()
 
-		self.withdraw()
-		self.update_idletasks()
-		self.apply()
-		self.cancel()
+    #
+    # standard button semantics
+    def ok(self, event=None):
+        if not self.validate():
+            self.initial_focus.focus_set() # put focus back
+            return
 
-	def cancel(self, event=None):
-		# put focus back to the parent window
-		self.parent.focus_set()
-		self.destroy()
+        self.withdraw()
+        self.update_idletasks()
+        self.apply()
+        self.cancel()
 
-	#
-	# command hooks
-	def validate(self):
-		return 1 # override
+    def cancel(self, event=None):
+        # put focus back to the parent window
+        self.parent.focus_set()
+        self.destroy()
 
-	def apply(self):
-		pass # override
-	
-		
+    #
+    # command hooks
+    def validate(self):
+        return 1 # override
+
+    def apply(self):
+        pass # override
+
+        
