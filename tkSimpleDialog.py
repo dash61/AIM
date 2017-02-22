@@ -1,11 +1,11 @@
 """
 A class for a generic dialog.
 
-From:  http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
+Taken from:  http://effbot.org/tkinterbook/tkinter-dialog-windows.htm
 """
 
 from tkinter import Toplevel, Frame, Button, ACTIVE, LEFT
-#import os
+
 
 class Dialog(Toplevel):
 
@@ -43,12 +43,12 @@ class Dialog(Toplevel):
     # construction hooks
     def body(self, master):
         # create dialog body.  return widget that should have
-        # initial focus.  this method should be overridden
+        # initial focus.  this method should be overridden.
         pass
 
     def buttonbox(self):
         # add standard button box. override if you don't want the
-        # standard buttons
+        # standard buttons.
         box = Frame(self)
 
         w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
@@ -85,5 +85,3 @@ class Dialog(Toplevel):
 
     def apply(self):
         pass # override
-
-        

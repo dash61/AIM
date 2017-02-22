@@ -1,8 +1,9 @@
 """
-Second algorithm function for application.
+Second algorithm function for application. Intentionally copied from the 1st, and then modified,
+just to show how to do multiple algorithms.
 
 This algorithm is based on the book "How to Make $1,000,000 in the Stock Market Automatically",
-by Robert Lichello, but has 2 modifications (see comments below).
+by Robert Lichello, but has 2 modifications (see comments below in the coreCalculate2 function).
 """
 
 def calculate2(self):
@@ -66,6 +67,8 @@ def calculate2(self):
         print("EXCEPTION OCCURRED IN ALGO2.PY, IN calculate2 FUNCTION - " + str(e))
 
 
+# Note that this loops through all stock prices in the self.closes list, then
+# rounds the floating point values afterwards.
 def coreCalculate2(self, safeFloat, threshFloat):
     for index in range(1, len(self.closes)):
         val = self.closes[index]

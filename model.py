@@ -23,24 +23,24 @@ class Model():
         self.startDate = datetime.date(2016, 1, 1)     # example date just to start app with
         self.endDate = datetime.date(2016, 12, 31)     # will be overridden later in the view class
         self.strInvestment = "4000"                    # example starting investment, in dollars
-        self.pcntl = []
-        self.cash = []
-        self.pv = []
-        self.sv = []
-        self.sharesOwned = []
-        self.order = []
-        self.numTrans = 0
-        self.numDataPoints = 0
-        self.quotes = []
-        self.closes = []
-        self.ave5days = []
+        self.pcntl = []        # portfolio control (see book for explanation)
+        self.cash = []         # cash on hand
+        self.pv = []           # portfolio value
+        self.sv = []           # stock value
+        self.sharesOwned = []  # number of stock shares owned
+        self.order = []        # amount of a buy or sell order, in dollars
+        self.numTrans = 0      # number of transactions (buy or sell orders) made
+        self.numDataPoints = 0 # number of data points in our list of stock prices (a convenience, it is used a lot)
+        self.quotes = []       # a large list to hold all stock data retrieved from the Internet, not just the closing prices
+        self.closes = []       # the stock prices we save are the 'closing' prices for each trading day
+        self.ave5days = []     # the 'aveNdays' lists are used for graphing moving averages of the stock prices
         self.ave11days = []
         self.ave21days = []
         self.ave41days = []
         self.ave81days = []
         self.ave161days = []
         self.ave251days = []
-        self.annualROI = 0.0
+        self.annualROI = 0.0   # annualized return on investment
         self.bLoopOnParam1 = False
         self.bLoopOnParam2 = False
         self.bLoopOnParam3 = False
@@ -150,6 +150,7 @@ class Model():
         #print ("Model - horzSize is now {:.3f} inches (dpi = 80)".format(horzSize))
 
 
+    # Helper function for calcAverages (below).
     # Inputs:
     # x - number of days to average inside array
     # in_array - array of numbers to average
@@ -176,7 +177,6 @@ class Model():
     # for the ave5days array.  This is because for the last 5 days, we do 1 average,
     # then don't do an average for the 4 days, 3 days, 2 days, 1 day remaining
     # as we loop. 3) Calc average using list comprehension.
-
     def calcAverages(self):
         numDays = len(self.closes)
 

@@ -26,3 +26,12 @@ To use the program:
 - Fill out the stock symbol, start and end dates, and starting investment.
 - Select the algorithm.
 - Hit the "Run Selected Algorithm" button (or hit RETURN).
+
+### Dependencies
+
+- Python 3.5
+- Matplotlib 1.5.1
+- Numpy 1.11.0
+
+You'll need these 3 packages at a minimum; I forget if matplotlib or numpy install other things that they themselves need, but I'm sure they'll tell you.
+Slightly different variations in versions may work as well.

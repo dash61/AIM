@@ -58,8 +58,8 @@ The GUI has these fields:
 - Algo 2 - Modified AIM - Second of four algorithm buttons. Runs a modified version of the AIM algorithm that I came up with. Comments in algo2.py explain the changes.
 - Algo 3 - Third of four algorithm buttons. Runs code in algo3.py, which currently just returns (does nothing).
 - Algo 4 - Fourth of four algorithm buttons. Runs code in algo4.py, which currently just returns (does nothing).
-- Calc Optimum SAFE Value - This will run the entire selected algorithm in a loop, changing the SAFE value from 0% to 15% in 0.1% steps. It will save and then display the 'best' safe value (highest Annual ROI) in the green box below, and refresh the graph and all calculated values with that best SAFE value.
-- Calc Optimum Threshold Value - Same as above except it loops through threshold values from $0 to $500 in $5 increments.
+- Calc Optimum SAFE Value - This will run the entire selected algorithm in a loop, changing the SAFE value from 0% to 15% in 0.1% steps. It will save and then display the 'best' safe value (highest Annual ROI) in the green box below, and refresh the graph and all calculated values with that best SAFE value. You can change what this says and does in algorithms 3 and 4.
+- Calc Optimum Threshold Value - Same as above except it loops through threshold values from $0 to $500 in $5 increments. You can change what this says and does in algorithms 3 and 4.
 - [There are 2 other buttons that are not used yet but could be used for any of the 4 algorithms]
 - 4 edit boxes (green and grey boxes) - These are 4 parameters that each algorithm can use as it needs. The 2 implemented algorithms both use the 1st edit box as the desired SAFE parameter, and the 2nd box as the threshold parameter. Green just means used; grey means not used.
 
@@ -80,9 +80,9 @@ I first read the book "How to Make $1,000,000 in the Stock Market Automatically"
 
 Lichello called his algorithm "AIM" (Automatic Investment Management"), the idea being that once a month you would feed the stock price into the algorithm and it would crank out either a buy order, a sell order, or say to do nothing.
 
-Around 2013, I started an iPhone app to use the AIM algorithm. I never released this to the public because I thought I would get sued out of existence since it explicitly advises to buy or sell 'x' number of shares. It also didn't seem to be working very well, and I needed some way to test it.
+Around 2013, I started an iPhone app to use the AIM algorithm. I never released this to the public because I thought I would get sued out of existence since it explicitly advises to buy or sell 'x' number of shares. It also wasn't clear that it was working correctly, and I needed some way to easily test it.
 
-In May 2016, I started this project in order to easily push historical stock data into AIM and see how it performed. The core code took about 1 month to write. I then experimented with other algorithms, had some success, but didn't pursue it because no algorithm really worked all the time. The modified AIM algorithm seems to work better than the original in many cases.
+In May 2016, I started this Python project in order to easily push historical stock data into AIM and see how it performed. The core code took about 1 month to write. I then experimented with other algorithms, had some success, but didn't pursue it because no algorithm really worked all the time. The modified AIM algorithm seems to work better than the original in many cases.
 
 This app is a cleaned up version (for public consumption), with my experimental algorithms ripped out, but the original and modified AIM algorithms left intact. Feel free to experiment with your own algorithms in algo3.py and algo4.py. It is written in Python and uses matplotlib for plotting and tk/ttk for the GUI controls and layout.
 
@@ -105,7 +105,7 @@ The 2001 updated Fourth Edition of the book is ISBN 0-451-20441-7.
 
 4. Author of this application: 
 
-Don Lilly
+Don Lilly, Zoba LLC
 Report bugs/comments/suggestions to don@zobasoft.biz.
 
 ###TAB=License

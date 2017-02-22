@@ -1,10 +1,12 @@
 """
 First algorithm function for application.
 
+The member variables, especially the lists, are important to the overall application, in terms of
+graphing and calculating the final results.
+
 This algorithm is based on the book "How to Make $1,000,000 in the Stock Market Automatically",
 by Robert Lichello. 
 """
-
 
 def calculate1(self):
     try:
@@ -67,6 +69,8 @@ def calculate1(self):
         print("EXCEPTION OCCURRED IN ALGO1.PY, IN calculate1 FUNCTION - " + str(e))
 
 
+# Note that this loops through all stock prices in the self.closes list, then
+# rounds the floating point values afterwards.
 def coreCalculate1(self, safeFloat, threshFloat):
     for index in range(1, len(self.closes)):
         val = self.closes[index]
