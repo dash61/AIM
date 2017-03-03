@@ -18,46 +18,47 @@ import algorithms.algo4
 
 
 class Model():
+    'Model class of the MVC architecture.'
     def __init__(self):
-        self.strStockSymbol = "ZIOP"                   # example stock symbol
-        self.startDate = datetime.date(2016, 1, 1)     # example date just to start app with
-        self.endDate = datetime.date(2016, 12, 31)     # will be overridden later in the view class
-        self.strInvestment = "4000"                    # example starting investment, in dollars
+        self.str_stock_symbol = "ZIOP"                   # example stock symbol
+        self.start_date = datetime.date(2016, 1, 1)     # example date just to start app with
+        self.end_date = datetime.date(2016, 12, 31)     # will be overridden later in the view class
+        self.str_investment = "4000"                    # example starting investment, in dollars
         self.pcntl = []        # portfolio control (see book for explanation)
         self.cash = []         # cash on hand
         self.pv = []           # portfolio value
         self.sv = []           # stock value
-        self.sharesOwned = []  # number of stock shares owned
+        self.shares_owned = []  # number of stock shares owned
         self.order = []        # amount of a buy or sell order, in dollars
-        self.numTrans = 0      # number of transactions (buy or sell orders) made
-        self.numDataPoints = 0 # number of data points in our list of stock prices (a convenience, it is used a lot)
+        self.num_trans = 0      # number of transactions (buy or sell orders) made
+        self.num_data_points = 0 # number of data points in our list of stock prices (a convenience, it is used a lot)
         self.quotes = []       # a large list to hold all stock data retrieved from the Internet, not just the closing prices
         self.closes = []       # the stock prices we save are the 'closing' prices for each trading day
-        self.ave5days = []     # the 'aveNdays' lists are used for graphing moving averages of the stock prices
-        self.ave11days = []
-        self.ave21days = []
-        self.ave41days = []
-        self.ave81days = []
-        self.ave161days = []
-        self.ave251days = []
-        self.annualROI = 0.0   # annualized return on investment
-        self.bLoopOnParam1 = False
-        self.bLoopOnParam2 = False
-        self.bLoopOnParam3 = False
-        self.bLoopOnParam4 = False
+        self.ave_5_days = []     # the 'aveNdays' lists are used for graphing moving averages of the stock prices
+        self.ave_11_days = []
+        self.ave_21_days = []
+        self.ave_41_days = []
+        self.ave_81_days = []
+        self.ave_161_days = []
+        self.ave_251_days = []
+        self.annual_ROI = 0.0   # annualized return on investment
+        self.bLoop_on_param1 = False
+        self.bLoop_on_param2 = False
+        self.bLoop_on_param3 = False
+        self.bLoop_on_param4 = False
 
-        self.optParam1 = 0.052
-        self.optParam2 = 0.80
-        self.optParam3 = 0.0
-        self.optParam4 = 0.0
-        self.horzSize = 9.0  # in inches; dpi = 80
+        self.opt_param1 = 0.052
+        self.opt_param2 = 0.80
+        self.opt_param3 = 0.0
+        self.opt_param4 = 0.0
+        self.horz_size = 9.0  # in inches; dpi = 80
 
     def __del__(self):
         print(id(self), 'died')
 
 
-    def calcROI(self, startDate, endDate):
-        delta = endDate - startDate   # get delta between start and stop dates
+    def calc_ROI(self, start_date, end_date):
+        delta = end_date - start_date   # get delta between start and stop dates
         years = delta.days / 365.25   # calc number of years that passed over time range
         x = self.pv[len(self.pv)-1] / self.pv[0]  # ratio of ending pv to starting pv
         y = 1.0 / years               # get inverse of years
@@ -66,104 +67,104 @@ class Model():
         z = round(z, 2)               # round off
         return z
 
-    def getStockDataFromInternet(self, startDate, endDate):
+    def get_stock_data_from_internet(self, start_date, end_date):
         try:
-            return quotes_historical_yahoo_ochl(self.strStockSymbol, startDate, endDate) # get stock data!
-        except Exception:
+            return quotes_historical_yahoo_ochl(self.str_stock_symbol, start_date, end_date) # get stock data!
+        except BaseException:
             messagebox.showerror("ERROR", "Could not get data from the Internet; bad stock symbol?")
             return
 
 
     # Pre-Calculate functions
-    def setStockSymbol(self, stockSymbol):
-        self.strStockSymbol = stockSymbol
+    def set_stock_symbol(self, stock_symbol):
+        self.str_stock_symbol = stock_symbol
 
-    def setStartDate(self, startDate):
-        self.startDate = startDate
+    def set_start_date(self, start_date):
+        self.start_date = start_date
 
-    def setEndDate(self, endDate):
-        self.endDate = endDate
+    def set_end_date(self, end_date):
+        self.end_date = end_date
 
-    def setInvestment(self, investment):
-        self.strInvestment = investment
+    def set_investment(self, investment):
+        self.str_investment = investment
 
-    def setOptParam1Mode(self, value):
-        self.bLoopOnParam1 = value
+    def set_opt_param1_mode(self, value):
+        self.bLoop_on_param1 = value
 
-    def setOptParam2Mode(self, value):
-        self.bLoopOnParam2 = value
+    def set_opt_param2_mode(self, value):
+        self.bLoop_on_param2 = value
 
-    def setOptParam3Mode(self, value):
-        self.bLoopOnParam3 = value
+    def set_opt_param3_mode(self, value):
+        self.bLoop_on_param3 = value
 
-    def setOptParam4Mode(self, value):
-        self.bLoopOnParam4 = value
+    def set_opt_param4_mode(self, value):
+        self.bLoop_on_param4 = value
 
-    def loopOnThres(self):
-        self.bLoopOnParam2 = True
+    def loop_on_thres(self):
+        self.bLoop_on_param2 = True
 
-    def setOptParams(self, param1, param2, param3, param4):
-        self.optParam1 = float(param1)
-        self.optParam2 = float(param2)
-        self.optParam3 = float(param3)
-        self.optParam4 = float(param4)
+    def set_opt_params(self, param1, param2, param3, param4):
+        self.opt_param1 = float(param1)
+        self.opt_param2 = float(param2)
+        self.opt_param3 = float(param3)
+        self.opt_param4 = float(param4)
 
     # Post-Calculate functions
-    def getEndingPV(self):
+    def get_ending_PV(self):
         return self.pv[len(self.pv)-1]
 
-    def getEndingSV(self):
+    def get_ending_SV(self):
         return self.sv[len(self.sv)-1]
 
-    def getEndingCash(self):
+    def get_ending_cash(self):
         return self.cash[len(self.cash)-1]
 
-    def getNumTrans(self):
-        return self.numTrans
+    def get_num_trans(self):
+        return self.num_trans
 
-    def getNumDataPoints(self):
-        return self.numDataPoints
+    def get_num_data_points(self):
+        return self.num_data_points
 
-    def getStartingShares(self):
-        return self.sharesOwned[0]
+    def get_starting_shares(self):
+        return self.shares_owned[0]
 
-    def getEndingShares(self):
-        return self.sharesOwned[len(self.sharesOwned)-1]
+    def get_ending_shares(self):
+        return self.shares_owned[len(self.shares_owned)-1]
 
-    def getROI(self):
-        return self.annualROI
+    def get_ROI(self):
+        return self.annual_ROI
 
-    def getOptParam1(self):
-        return self.optParam1
+    def get_opt_param1(self):
+        return self.opt_param1
 
-    def getOptParam2(self):
-        return self.optParam2
+    def get_opt_param2(self):
+        return self.opt_param2
 
-    def getOptParam3(self):
-        return self.optParam3
+    def get_opt_param3(self):
+        return self.opt_param3
 
-    def getOptParam4(self):
-        return self.optParam4
+    def get_opt_param4(self):
+        return self.opt_param4
 
-    def setHorzSize(self, horzSize):
-        self.horzSize = horzSize
-        #print ("Model - horzSize is now {:.3f} inches (dpi = 80)".format(horzSize))
+    def set_horz_size(self, horz_size):
+        self.horz_size = horz_size
+        #print ("Model - horz_size is now {:.3f} inches (dpi = 80)".format(horz_size))
 
 
-    # Helper function for calcAverages (below).
+    # Helper function for calc_averages (below).
     # Inputs:
-    # x - number of days to average inside array
+    # days_to_ave - number of days to average inside array
     # in_array - array of numbers to average
-    # numDays - total size of the array
-    def calcAverageArray(self, x, in_array, numDays):
-        y = int((x - 1) / 2) # find midpoint of x value
+    # num_days - total size of the array
+    def calc_average_array(self, days_to_ave, in_array, num_days):
+        midpt = int((days_to_ave - 1) / 2) # find midpoint of x value
         del in_array[:]      # clear out old data
-        in_array = [sum(self.closes[i:i+x]) / float(x) for i in range(0, numDays)] # do the averaging
-        temp = np.roll(in_array, y) # right rotate 'y' positions to align average curve to real curve
-        for i in range(0, y):
-            temp[i] = sum(self.closes[0:y+i+1]) / float(y+i+1)
-        for i in range(numDays-y, numDays):
-            temp[i] = sum(self.closes[i-y:numDays]) / float(numDays-(i-y))
+        in_array = [sum(self.closes[i:i+days_to_ave]) / float(days_to_ave) for i in range(0, num_days)] # do the averaging
+        temp = np.roll(in_array, midpt) # right rotate 'midpt' positions to align average curve to real curve
+        for i in range(0, midpt):
+            temp[i] = sum(self.closes[0:midpt+i+1]) / float(midpt+i+1)
+        for i in range(num_days-midpt, num_days):
+            temp[i] = sum(self.closes[i-midpt:num_days]) / float(num_days-(i-midpt))
         in_array = temp.tolist()
         return in_array
 
@@ -174,45 +175,45 @@ class Model():
     # 2) Alloc space in each array for the averages.
     # Space needed is length of quotes array minus (ave length - 1).
     # For example, if quotes array is 15 long, we'll need: 15 - (5 - 1) = 11
-    # for the ave5days array.  This is because for the last 5 days, we do 1 average,
+    # for the ave_5_days array.  This is because for the last 5 days, we do 1 average,
     # then don't do an average for the 4 days, 3 days, 2 days, 1 day remaining
     # as we loop. 3) Calc average using list comprehension.
-    def calcAverages(self):
-        numDays = len(self.closes)
+    def calc_averages(self):
+        num_days = len(self.closes)
 
-        if numDays > 5:
-            self.ave5days = self.calcAverageArray(5, self.ave5days, numDays)
-            #len_5days = len(self.ave5days)
+        if num_days > 5:
+            self.ave_5_days = self.calc_average_array(5, self.ave_5_days, num_days)
+            #len_5days = len(self.ave_5_days)
 
-        if numDays > 11:
-            self.ave11days = self.calcAverageArray(11, self.ave11days, numDays)
-            #len_11days = len(self.ave11days)
-            #print ("Ave 11 day length = " + str(len_11days) + ", closes length = " + str(numDays))
+        if num_days > 11:
+            self.ave_11_days = self.calc_average_array(11, self.ave_11_days, num_days)
+            #len_11days = len(self.ave_11_days)
+            #print ("Ave 11 day length = " + str(len_11days) + ", closes length = " + str(num_days))
 
-        if numDays > 21:
-            self.ave21days = self.calcAverageArray(21, self.ave21days, numDays)
-            #len_21days = len(self.ave21days)
-            #print ("Ave 21 day length = " + str(len_21days) + ", closes length = " + str(numDays))
+        if num_days > 21:
+            self.ave_21_days = self.calc_average_array(21, self.ave_21_days, num_days)
+            #len_21days = len(self.ave_21_days)
+            #print ("Ave 21 day length = " + str(len_21days) + ", closes length = " + str(num_days))
 
-        if numDays > 41:
-            self.ave41days = self.calcAverageArray(41, self.ave41days, numDays)
-            #len_41days = len(self.ave41days)
-            #print ("Ave 41 day length = " + str(len_41days) + ", closes length = " + str(numDays))
+        if num_days > 41:
+            self.ave_41_days = self.calc_average_array(41, self.ave_41_days, num_days)
+            #len_41days = len(self.ave_41_days)
+            #print ("Ave 41 day length = " + str(len_41days) + ", closes length = " + str(num_days))
 
-        if numDays > 81:
-            self.ave81days = self.calcAverageArray(81, self.ave81days, numDays)
-            #len_81days = len(self.ave81days)
-            #print ("Ave 81 day length = " + str(len_81days) + ", closes length = " + str(numDays))
+        if num_days > 81:
+            self.ave_81_days = self.calc_average_array(81, self.ave_81_days, num_days)
+            #len_81days = len(self.ave_81_days)
+            #print ("Ave 81 day length = " + str(len_81days) + ", closes length = " + str(num_days))
 
-        if numDays > 161:
-            self.ave161days = self.calcAverageArray(161, self.ave161days, numDays)
-            #len_161days = len(self.ave161days)
-            #print ("Ave 161 day length = " + str(len_161days) + ", closes length = " + str(numDays))
+        if num_days > 161:
+            self.ave_161_days = self.calc_average_array(161, self.ave_161_days, num_days)
+            #len_161days = len(self.ave_161_days)
+            #print ("Ave 161 day length = " + str(len_161days) + ", closes length = " + str(num_days))
 
-        if numDays > 251:
-            self.ave251days = self.calcAverageArray(251, self.ave251days, numDays)
-            #len_251days = len(self.ave251days)
-            #print ("Ave 251 day length = " + str(len_251days) + ", closes length = " + str(numDays))
+        if num_days > 251:
+            self.ave_251_days = self.calc_average_array(251, self.ave_251_days, num_days)
+            #len_251days = len(self.ave_251_days)
+            #print ("Ave 251 day length = " + str(len_251days) + ", closes length = " + str(num_days))
 
 
 # Direct injection of these functions into this class, so it can be in another file
@@ -221,5 +222,5 @@ Model.calculate1 = algorithms.algo1.calculate1
 Model.calculate2 = algorithms.algo2.calculate2
 Model.calculate3 = algorithms.algo3.calculate3
 Model.calculate4 = algorithms.algo4.calculate4
-Model.coreCalculate1 = algorithms.algo1.coreCalculate1
-Model.coreCalculate2 = algorithms.algo2.coreCalculate2
+Model.core_calculate1 = algorithms.algo1.core_calculate1
+Model.core_calculate2 = algorithms.algo2.core_calculate2

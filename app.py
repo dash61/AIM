@@ -17,7 +17,7 @@ from controller import Controller
 if __name__ == '__main__':
     root = Tk()
     matplotlib.interactive(0)   # turn off interaction of TkAgg
-    c = Controller(root)
-    c.run()
+    cntlr = Controller(root)
+    cntlr.run()
     print("shutting down")
     plt.close("all")

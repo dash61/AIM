@@ -26,7 +26,7 @@ class Dialog(Toplevel):
         body = Frame(self)
         self.initial_focus = self.body(body)
         body.pack(padx=5, pady=5)
-        self.buttonbox()
+        self.button_box()
 
         self.grab_set()
 
@@ -46,7 +46,7 @@ class Dialog(Toplevel):
         # initial focus.  this method should be overridden.
         pass
 
-    def buttonbox(self):
+    def button_box(self):
         # add standard button box. override if you don't want the
         # standard buttons.
         box = Frame(self)
