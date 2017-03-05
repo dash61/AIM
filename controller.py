@@ -19,6 +19,7 @@ from help import HelpDialog
 class Controller(tk.Frame):
     'Controller class of the MVC architecture.'
     def __init__(self, master=None, *args, **kwargs):
+        'Constructor'
         tk.Frame.__init__(self, master, *args, **kwargs)
         self.root = master
         self.view = View(self, self.root)
@@ -30,13 +31,16 @@ class Controller(tk.Frame):
         self.calc_btn_hit = 0
 
     def __del__(self):
+        'Destructor, just to see if/when it gets called'
         print(id(self), 'died')
 
     def close_app(self):
+        'Function called when the close button is hit'
         print("Got WM_DELETE_WINDOW msg")
         self.root.quit()
 
     def convert_start_end_dates(self):
+        'Helper function to convert start/end dates to real date objects'
         list_start_date = re.split('[- /]', self.view.str_start_date.get()) # split date into fields
         listend_date = re.split('[- /]', self.view.str_end_date.get()) # split date into fields
         if list_start_date[0] == "MM" or listend_date[0] == "MM":
@@ -48,6 +52,7 @@ class Controller(tk.Frame):
         return (datestart_date, dateend_date)
 
     def pre_calculate(self):
+        'Code to run before one of the four algorithms gets run'
         self.model.set_stock_symbol(self.view.str_stock_name.get())
         (start_date, end_date) = self.convert_start_end_dates() # convert strings to real Date objects
         self.model.set_start_date(start_date)
@@ -56,10 +61,11 @@ class Controller(tk.Frame):
         self.model.set_opt_params(self.view.str_param1.get(), self.view.str_param2.get(), self.view.str_param3.get(), self.view.str_param4.get())
 
     def calculate_1_enter_key(self, event):
+        'Function called if the RETURN key is hit.'
         self.calculate()
 
-    # Calc optimum value for parameter #1 for the selected algorithm
     def calc_opt_param1(self):
+        'Calc optimum value for parameter #1 for the selected algorithm'
         algo = self.view.algo_choice.get()
         if algo == 1 or algo == 2:
             self.model.set_opt_param1_mode(True)
@@ -67,8 +73,8 @@ class Controller(tk.Frame):
             self.model.set_opt_param1_mode(False)
             self.calculate()  # redo calc and graphs w/ best param1 chosen
 
-    # Calc optimum value for parameter #2 for the selected algorithm
     def calc_opt_param2(self):
+        'Calc optimum value for parameter #2 for the selected algorithm'
         algo = self.view.algo_choice.get()
         if algo == 1 or algo == 2:
             self.model.set_opt_param2_mode(True)
@@ -76,17 +82,18 @@ class Controller(tk.Frame):
             self.model.set_opt_param2_mode(False)
             self.calculate()  # redo calc and graphs w/ best param2 chosen
 
-    # Calc optimum value for parameter #3 for the selected algorithm
     def calc_opt_param3(self):
+        'Calc optimum value for parameter #3 for the selected algorithm'
         pass
         #algo = self.view.algo_choice.get()
 
-    # Calc optimum value for parameter #4 for the selected algorithm
     def calc_opt_param4(self):
+        'Calc optimum value for parameter #4 for the selected algorithm'
         pass
         #algo = self.view.algo_choice.get()
 
     def calculate(self):
+        'Run one of the four algorithms.'
         self.pre_calculate()
         algo = self.view.algo_choice.get()
         if algo == 1:
@@ -101,6 +108,7 @@ class Controller(tk.Frame):
             self.post_calculate()
 
     def post_calculate(self):
+        'Code to run after one of the four algorithms gets run'
         self.calc_btn_hit = 1
         self.view.str_PV.set("$ " + str(self.model.get_ending_PV())) # strPV.set ("$ " + str(pv[len(pv)-1]))
         self.view.str_SV.set("$ " + str(self.model.get_ending_SV()))
@@ -127,12 +135,14 @@ class Controller(tk.Frame):
         self.view.plot_it()
 
     def help(self):
+        'Function called when the help button is hit.'
         #helpDlg = HelpDialog(self.root, filename="help.txt")
         HelpDialog(self.root, filename="help.txt")
         #self.root.wait_window(helpDlg.top)
 
 
     def run(self):
+        'Main loop of the app; called from app.py'
         self.root.title("AIM")
         self.root.deiconify()
         self.root.mainloop()

@@ -8,8 +8,10 @@ from tkinter import Toplevel, Frame, Button, ACTIVE, LEFT
 
 
 class Dialog(Toplevel):
+    'Generic dialog class'
 
     def __init__(self, parent, title=None, filename=None):
+        'Constructor'
         Toplevel.__init__(self, parent)
         self.transient(parent)
         self.filename = ""
@@ -40,15 +42,18 @@ class Dialog(Toplevel):
         self.wait_window(self)
 
     #
-    # construction hooks
+    # 
     def body(self, master):
-        # create dialog body.  return widget that should have
-        # initial focus.  this method should be overridden.
+        """construction hooks.
+        
+        Create dialog body.  Return widget that should have
+        initial focus.  This method should be overridden."""
         pass
 
     def button_box(self):
-        # add standard button box. override if you don't want the
-        # standard buttons.
+        """add standard button box.
+        
+        override if you don't want the standard buttons."""
         box = Frame(self)
 
         w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
@@ -64,6 +69,7 @@ class Dialog(Toplevel):
     #
     # standard button semantics
     def ok(self, event=None):
+        'Handle the OK button press'
         if not self.validate():
             self.initial_focus.focus_set() # put focus back
             return
@@ -74,6 +80,7 @@ class Dialog(Toplevel):
         self.cancel()
 
     def cancel(self, event=None):
+        'Handle the Cancel button press'
         # put focus back to the parent window
         self.parent.focus_set()
         self.destroy()
@@ -81,7 +88,9 @@ class Dialog(Toplevel):
     #
     # command hooks
     def validate(self):
+        'Hook to validate the commands. Override as needed.'
         return 1 # override
 
     def apply(self):
+        'Optional override to do stuff when OK button is hit.'
         pass # override

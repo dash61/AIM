@@ -15,6 +15,7 @@ from tkinter import Tk  # use Tkinter for python 2, tkinter for python 3
 from controller import Controller
 
 if __name__ == '__main__':
+    'Main entry point of the app. Set up some libs and create the controller.'
     root = Tk()
     matplotlib.interactive(0)   # turn off interaction of TkAgg
     cntlr = Controller(root)

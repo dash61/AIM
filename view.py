@@ -18,6 +18,7 @@ import numpy as np
 class View():
     'View class of the MVC architecture.'
     def __init__(self, controller, master):
+        'Constructor'
         # DEFAULT CONSTANTS
         #APP_VERSION = 0.2
         self.SAFE_VALUE = "5.2"  # cheap 'constants'
@@ -221,10 +222,11 @@ class View():
         print("(view-init) matplotlib version is {}".format(mpl.__version__))
 
     def __del__(self):
+        'Destructor, just to see if/when it gets called'
         print(id(self), 'died')
 
-    # Set the text for the 4 buttons based on this 1st radio button being hit
     def click_algo1(self):
+        'Set the text for the 4 buttons based on this 1st radio button being hit'
         self.opt_btn1["text"] = "Calc Optimum SAFE Value"
         self.opt_btn2["text"] = "Calc Optimum Threshold Value"
         self.opt_btn3["text"] = "      -- Not Used --      "
@@ -242,8 +244,8 @@ class View():
             self.controller.calc_btn_hit = 0
         self.prev_algo = 1
 
-    # Set the text for the 4 buttons based on this 2nd radio button being hit
     def click_algo2(self):
+        'Set the text for the 4 buttons based on this 2nd radio button being hit'
         self.opt_btn1["text"] = "Calc Optimum SAFE Value"
         self.opt_btn2["text"] = "Calc Optimum Threshold Value"
         self.opt_btn3["text"] = "      -- Not Used --      "
@@ -261,8 +263,8 @@ class View():
             self.controller.calc_btn_hit = 0
         self.prev_algo = 2
 
-    # Set the text for the 4 buttons based on this 3rd radio button being hit
     def click_algo3(self):
+        'Set the text for the 4 buttons based on this 3rd radio button being hit'
         self.opt_btn1["text"] = "      -- Not Used --      "
         self.opt_btn2["text"] = "      -- Not Used --      "
         self.opt_btn3["text"] = "      -- Not Used --      "
@@ -280,8 +282,8 @@ class View():
             self.controller.calc_btn_hit = 0
         self.prev_algo = 3
 
-    # Set the text for the 4 buttons based on this 4th radio button being hit
     def click_algo4(self):
+        'Set the text for the 4 buttons based on this 4th radio button being hit'
         self.opt_btn1["text"] = "      -- Not Used --      "
         self.opt_btn2["text"] = "      -- Not Used --      "
         self.opt_btn3["text"] = "      -- Not Used --      "
@@ -299,8 +301,8 @@ class View():
             self.controller.calc_btn_hit = 0
         self.prev_algo = 4
 
-    # Call if the 'no plots' option is checked.
     def click_plot_none(self):
+        'Call if the "no plots" option is checked.'
         self.prev_plot_choice = 0
         if self.plot_choice0.get() == 1:  # then "none" plot is selected, so deselect all other checkboxes
             self.plot_choice5.set(0)
@@ -328,9 +330,9 @@ class View():
                 self.plot_choice251.get() == 0):
             self.plot_choice0.set(1)
 
-    # Called when one of the plot checkboxes is clicked, also at the end of plotting
-    # (to redraw the plots).
     def click_plot(self):
+        """Called when one of the plot checkboxes is clicked, also at the end 
+        of plotting (to redraw the plots)."""
         self.plot_choice0.set(0)  # clear None button
         self.plot_choice_all = 0
         if self.plot_choice5.get() == 1:
@@ -414,21 +416,23 @@ class View():
 
 
     def remove_from_list_by_bit_flag(self, bitflag):
+        'helper function to remove one of the average plots'
         for item in self.p5:
             if bitflag == item[1]:
                 #print ("2 - Removing curve = " + str(id(item[0])))
                 item[0].remove()
                 self.p5.remove(item)
 
-    # code from site that had plot examples
     @staticmethod
     def make_patch_spines_invisible(axis):
+        'code from a site that had plot examples'
         axis.set_frame_on(True)
         axis.patch.set_visible(False)
         for spine in axis.spines.values():
             spine.set_visible(False)
 
     def resize_func(self, event):
+        'function triggered when the window is resized; we need to redraw the plot'
         #w, h, t = event.width, event.height, event.type
         w_real = self.root.winfo_width()
         if self.controller.calc_btn_hit == 1 and self.saved_window_width != w_real:
@@ -440,11 +444,13 @@ class View():
 
     # inputs - tick value = x and position = pos
     def format_date(self, tick_val, pos=None):
+        'helper function to format the date string along the x-axis'
         thisind = np.clip(int(tick_val + 0.5), 0, len(self.controller.model.closes) - 1)
         the_date = date.fromordinal(int(self.dates[thisind]))
         return the_date.strftime('%b-%e-%Y') # m d Y in gui date boxes
 
     def plot_it(self):
+        'Main plot routine to draw the big graph w/ all the plots in it'
 #         print ("About to clear plots, thread={}, threadID={}, MPL ver={}".format(
 #             current_thread().name, current_thread().ident, mpl.__version__))
         self.clear_plots()
@@ -516,6 +522,7 @@ class View():
 
 
     def clear_plots(self):
+        'Clear all plots from the graph'
         #print ("CLEARING PLOTS.....................")
         if self.p1 != None:
             try:

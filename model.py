@@ -20,6 +20,7 @@ import algorithms.algo4
 class Model():
     'Model class of the MVC architecture.'
     def __init__(self):
+        'Constructor'
         self.str_stock_symbol = "ZIOP"                   # example stock symbol
         self.start_date = datetime.date(2016, 1, 1)     # example date just to start app with
         self.end_date = datetime.date(2016, 12, 31)     # will be overridden later in the view class
@@ -54,10 +55,12 @@ class Model():
         self.horz_size = 9.0  # in inches; dpi = 80
 
     def __del__(self):
+        'Destructor, just to see if/when it gets called'
         print(id(self), 'died')
 
 
     def calc_ROI(self, start_date, end_date):
+        'Calculate the annualized return on investment'
         delta = end_date - start_date   # get delta between start and stop dates
         years = delta.days / 365.25   # calc number of years that passed over time range
         x = self.pv[len(self.pv)-1] / self.pv[0]  # ratio of ending pv to starting pv
@@ -68,6 +71,7 @@ class Model():
         return z
 
     def get_stock_data_from_internet(self, start_date, end_date):
+        'Get stock data from Yahoo finance'
         try:
             return quotes_historical_yahoo_ochl(self.str_stock_symbol, start_date, end_date) # get stock data!
         except BaseException:
@@ -77,33 +81,43 @@ class Model():
 
     # Pre-Calculate functions
     def set_stock_symbol(self, stock_symbol):
+        'Helper function to set the stock symbol'
         self.str_stock_symbol = stock_symbol
 
     def set_start_date(self, start_date):
+        'Helper function to set the start date'
         self.start_date = start_date
 
     def set_end_date(self, end_date):
+        'Helper function to set the end date'
         self.end_date = end_date
 
     def set_investment(self, investment):
+        'Helper function to set the initial investment'
         self.str_investment = investment
 
     def set_opt_param1_mode(self, value):
+        'Helper function to set the optional parameter #1'
         self.bLoop_on_param1 = value
 
     def set_opt_param2_mode(self, value):
+        'Helper function to set the optional parameter #2'
         self.bLoop_on_param2 = value
 
     def set_opt_param3_mode(self, value):
+        'Helper function to set the optional parameter #3'
         self.bLoop_on_param3 = value
 
     def set_opt_param4_mode(self, value):
+        'Helper function to set the optional parameter #4'
         self.bLoop_on_param4 = value
 
     def loop_on_thres(self):
+        'Helper function to set the loop flag'
         self.bLoop_on_param2 = True
 
     def set_opt_params(self, param1, param2, param3, param4):
+        'Helper function to set all optional parameters'
         self.opt_param1 = float(param1)
         self.opt_param2 = float(param2)
         self.opt_param3 = float(param3)
@@ -111,52 +125,65 @@ class Model():
 
     # Post-Calculate functions
     def get_ending_PV(self):
+        'Helper function to get the ending portfolio value'
         return self.pv[len(self.pv)-1]
 
     def get_ending_SV(self):
+        'Helper function to get the ending stock value'
         return self.sv[len(self.sv)-1]
 
     def get_ending_cash(self):
+        'Helper function to get the ending cash amount'
         return self.cash[len(self.cash)-1]
 
     def get_num_trans(self):
+        'Helper function to get the number of transactions'
         return self.num_trans
 
     def get_num_data_points(self):
+        'Helper function to get the number of data points in the stock data'
         return self.num_data_points
 
     def get_starting_shares(self):
+        'Helper function to get the number of shares originally bought'
         return self.shares_owned[0]
 
     def get_ending_shares(self):
+        'Helper function to get the ending number of shares'
         return self.shares_owned[len(self.shares_owned)-1]
 
     def get_ROI(self):
+        'Helper function to get the ROI'
         return self.annual_ROI
 
     def get_opt_param1(self):
+        'Helper function to get the optional parameter #1'
         return self.opt_param1
 
     def get_opt_param2(self):
+        'Helper function to get the optional parameter #2'
         return self.opt_param2
 
     def get_opt_param3(self):
+        'Helper function to get the optional parameter #3'
         return self.opt_param3
 
     def get_opt_param4(self):
+        'Helper function to get the optional parameter #4'
         return self.opt_param4
 
     def set_horz_size(self, horz_size):
+        'Helper function to set the horizontal size of the window'
         self.horz_size = horz_size
         #print ("Model - horz_size is now {:.3f} inches (dpi = 80)".format(horz_size))
 
 
-    # Helper function for calc_averages (below).
     # Inputs:
     # days_to_ave - number of days to average inside array
     # in_array - array of numbers to average
     # num_days - total size of the array
     def calc_average_array(self, days_to_ave, in_array, num_days):
+        'Helper function for calc_averages (below).'
         midpt = int((days_to_ave - 1) / 2) # find midpoint of x value
         del in_array[:]      # clear out old data
         in_array = [sum(self.closes[i:i+days_to_ave]) / float(days_to_ave) for i in range(0, num_days)] # do the averaging
@@ -169,16 +196,17 @@ class Model():
         return in_array
 
 
-    # Calc moving averages for various lengths of time: 5 days, 10 days, etc.
-    # Data is in the self.closes[] array.
-    # Algorithm:  1) clear out old data in the array.
-    # 2) Alloc space in each array for the averages.
-    # Space needed is length of quotes array minus (ave length - 1).
-    # For example, if quotes array is 15 long, we'll need: 15 - (5 - 1) = 11
-    # for the ave_5_days array.  This is because for the last 5 days, we do 1 average,
-    # then don't do an average for the 4 days, 3 days, 2 days, 1 day remaining
-    # as we loop. 3) Calc average using list comprehension.
     def calc_averages(self):
+        """ Calc moving averages for various lengths of time: 5 days, 10 days, etc.
+        
+        Data is in the self.closes[] array.
+        Algorithm:  1) clear out old data in the array.
+        2) Alloc space in each array for the averages.
+        Space needed is length of quotes array minus (ave length - 1).
+        For example, if quotes array is 15 long, we'll need: 15 - (5 - 1) = 11
+        for the ave_5_days array.  This is because for the last 5 days, we do 1 average,
+        then don't do an average for the 4 days, 3 days, 2 days, 1 day remaining
+        as we loop. 3) Calc average using list comprehension."""
         num_days = len(self.closes)
 
         if num_days > 5:
