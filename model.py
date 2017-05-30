@@ -8,6 +8,7 @@ MVC template from:
 
 import math
 import datetime
+from datetime import datetime as dt
 from tkinter import messagebox  # use Tkinter for python 2, tkinter for python 3
 from matplotlib.finance import quotes_historical_yahoo_ochl
 import numpy as np
@@ -15,6 +16,15 @@ import algorithms.algo1
 import algorithms.algo2
 import algorithms.algo3
 import algorithms.algo4
+import urllib.request
+from enum import Enum
+
+
+class StockSite(Enum):
+    unknown = 0
+    yahoo = 1
+    google1 = 2  # https://www.google.com/finance/getprices
+    google2 = 3  # http://www.google.com/finance/historical
 
 
 class Model():
@@ -47,6 +57,8 @@ class Model():
         self.bLoop_on_param2 = False
         self.bLoop_on_param3 = False
         self.bLoop_on_param4 = False
+        self.num_days = 0
+        self.stockURLSite = StockSite.google2
 
         self.opt_param1 = 0.052
         self.opt_param2 = 0.80
@@ -70,12 +82,63 @@ class Model():
         z = round(z, 2)               # round off
         return z
 
+    def convertStringDateToOrdinal(self, strDate):
+        'Convert date in string format to a date ordinal'
+        list1 = strDate.split("-")
+        intYear = int(list1[2])
+        if intYear < 80:
+            intYear += 2000
+        else:
+            intYear += 1900
+        list1[2] = str(intYear)
+        newStrDate = list1[0] + "-" + list1[1] + "-" + list1[2]
+        dateObj = dt.strptime(newStrDate, "%d-%b-%Y")
+        ordinal = dateObj.toordinal()
+        return ordinal
+
     def get_stock_data_from_internet(self, start_date, end_date):
-        'Get stock data from Yahoo finance'
+        'Get stock data from Yahoo finance or Google'
         try:
-            return quotes_historical_yahoo_ochl(self.str_stock_symbol, start_date, end_date) # get stock data!
-        except BaseException:
-            messagebox.showerror("ERROR", "Could not get data from the Internet; bad stock symbol?")
+            if self.stockURLSite == StockSite.google1: # THIS URL HAS ISSUES, SO IT IS NOT VERY USEFUL
+                delta = endDate - start_date
+                DAY = 24*60*60 # POSIX day in seconds (exact value)
+                timestamp1 = calendar.timegm(start_date.timetuple())
+                urlString = "https://www.google.com/finance/getprices?q={}&p={}d&ts={}&f=d,c&df=cpct&ei=Ef6XUYDfCqSTiAKEMg".format(
+                    self.str_stock_symbol, delta.days, timestamp1)
+                with urllib.request.urlopen(urlString) as response:
+                    data = response.read()
+                strResponse = data.decode("utf-8")
+                lines = strResponse.split("\n")
+                del lines[0:7] # zap header lines
+                del lines[-1]  # zap last line
+                list1 = [x.split(",") for x in lines] # split each line into a list
+                list1[0][0] = list1[0][0][1:]         # get rid of leading 'a' character
+                list2 = [[float(x[0]), float(x[1])] for x in list1] # create list w/ just date, closing price values for each date
+                list3 = [[int(list2[0][0] + DAY*x[0]), x[1]] for x in list2] # convert date offset to timestamp
+                list3[0][0] = int(list2[0][0])        # replace 1st timestamp entry (munged above) to correct original value
+                self.quotes = [[dt.fromtimestamp(x[0]).toordinal(), x[1]] for x in list2] # convert timestamps to ordinals
+                return [q[1] for q in self.quotes]
+            elif self.stockURLSite == StockSite.google2: # THIS URL WORKS
+                urlString = "http://www.google.com/finance/historical?q={}&startdate={:02d}-{:02d}-{:4d}&enddate={:02d}-{:02d}-{:4d}&output=csv".format(
+                    self.str_stock_symbol, start_date.month, start_date.day, start_date.year, end_date.month, end_date.day, end_date.year)
+                with urllib.request.urlopen(urlString) as response:
+                    data = response.read()
+                strResponse = data.decode("utf-8")
+                lines = strResponse.split("\n")
+                # The output (after the first header line) will be:  Date,Open,High,Low,Close,Volume,
+                # starting from the 'startdate' and ending on the 'enddate', or as near as those 2 dates
+                # can be hit (might not be market days).
+                del lines[0]  # zap the header line
+                del lines[-1] # zap empty line at end
+                list1 = [x.split(",") for x in lines] # split each line into a list
+                self.quotes = [[self.convertStringDateToOrdinal(x[0]), float(x[4])] for x in list1] # grab and convert date; grab closing price
+                return [q[1] for q in self.quotes]
+            else:
+                return quotes_historical_yahoo_ochl(self.str_stock_symbol, start_date, end_date) # get stock data!
+                self.quotes = self.getStockDataFromInternet(self.start_date, self.endDate)
+                return [q[2] for q in self.quotes]
+        except Exception as e:
+            messagebox.showerror("ERROR", "Could not get data from the Internet; bad stock symbol?\n\n" + str(e) + ".")
             return
 
 

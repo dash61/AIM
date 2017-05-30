@@ -471,15 +471,15 @@ class View():
         self.par1 = self.host.twinx()
         self.par2 = self.host.twinx()
 
-        self.p1, = self.host.plot(just_ints, self.controller.model.closes, "b-")
+        self.p1, = self.host.plot(just_ints, self.controller.model.closes, "b-", linewidth=1.0)
         #host_ylim = self.host.get_ylim() # may need this value for certain plots
         self.host.set_xlabel("Time")
         self.host.set_ylabel("Stock Price ($)")
         tkw = dict(size=4, width=1.5)
 
         order2 = [x * -1 for x in self.controller.model.order] # flip sign of each array element using list comprehension
-        self.p2, = self.par1.plot(just_ints, self.controller.model.pv, "r--")
-        self.p3, = self.par2.plot(just_ints, order2, "go")
+        self.p2, = self.par1.plot(just_ints, self.controller.model.pv, "r--", linewidth=1.0)
+        self.p3, = self.par2.plot(just_ints, order2, "go", markersize=3.0)
         self.par2.set_ylabel("Orders ($)")          # you'll have to customize this for other algorithms
         self.par1.set_ylabel("Portfolio Value ($)") # ditto
         self.par2.spines["right"].set_position(("axes", 1.16)) # offset the right spine of par2

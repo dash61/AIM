@@ -9,10 +9,10 @@ by Robert Lichello, but has 2 modifications (see comments below in the core_calc
 def calculate2(self):
     'Calculate ROI and other params given historical stock data using a modified AIM algorithm.'
     try:
-        self.quotes = self.get_stock_data_from_internet(self.start_date, self.end_date)
-        if self.quotes is None:
+        self.closes = self.get_stock_data_from_internet(self.start_date, self.end_date)
+        if self.closes is None:
             return False
-        self.closes = [q[2] for q in self.quotes]
+        self.num_days = len(self.closes)
 
         del self.pv[:]          # portfolio value
         del self.sv[:]          # stock value
@@ -20,12 +20,12 @@ def calculate2(self):
         del self.pcntl[:]       # portfolio control, hard to explain
         del self.order[:]       # an order to buy or sell shares, in dollars
         del self.shares_owned[:] # num shares owned
-        self.pv    += [0.0] * len(self.closes)
-        self.sv    += [0.0] * len(self.closes)
-        self.cash  += [0.0] * len(self.closes)
-        self.pcntl += [0.0] * len(self.closes)
-        self.order += [0.0] * len(self.closes)
-        self.shares_owned += [0.0] * len(self.closes)
+        self.pv    += [0.0] * self.num_days
+        self.sv    += [0.0] * self.num_days
+        self.cash  += [0.0] * self.num_days
+        self.pcntl += [0.0] * self.num_days
+        self.order += [0.0] * self.num_days
+        self.shares_owned += [0.0] * self.num_days
 
         # MODIFIED AIM ALGORITHM:
         self.pv[0]    = float(self.str_investment)
@@ -35,7 +35,7 @@ def calculate2(self):
         self.order[0] = 0.0
         self.numTrans = 0
         self.shares_owned[0] = self.sv[0] / self.closes[0]
-        self.numDataPoints  = len(self.closes)
+        self.numDataPoints  = self.num_days
         safe_float     = self.opt_param1
         thresh_float   = self.opt_param2
 
@@ -72,7 +72,7 @@ def calculate2(self):
 # rounds the floating point values afterwards.
 def core_calculate2(self, safe_float, thresh_float):
     'Core calc broken out so it can be looped upon to optimize certain values.'
-    for index in range(1, len(self.closes)):
+    for index in range(1, self.num_days):
         val = self.closes[index]
         self.sv[index] = self.shares_owned[index-1] * val
         safe_val = self.sv[index] * safe_float * 0.01
