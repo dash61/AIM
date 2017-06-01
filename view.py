@@ -468,8 +468,8 @@ class View():
         # Using twinx - Having been created by twinx, par1 or par2 will have its frame off,
         # so the line of its detached spine is invisible.  You will have to fix that later.
         # The ticks and label will be placed on the right in this twinx call.
-        self.par1 = self.host.twinx()
-        self.par2 = self.host.twinx()
+        self.par1 = self.host.twinx()  # portfolio value
+        self.par2 = self.host.twinx()  # orders
 
         self.p1, = self.host.plot(just_ints, self.controller.model.closes, "b-", linewidth=1.0)
         #host_ylim = self.host.get_ylim() # may need this value for certain plots

@@ -131,6 +131,7 @@ class Model():
                 del lines[0]  # zap the header line
                 del lines[-1] # zap empty line at end
                 list1 = [x.split(",") for x in lines] # split each line into a list
+                list1.reverse()
                 self.quotes = [[self.convertStringDateToOrdinal(x[0]), float(x[4])] for x in list1] # grab and convert date; grab closing price
                 return [q[1] for q in self.quotes]
             else:

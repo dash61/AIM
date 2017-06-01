@@ -30,7 +30,7 @@ To use the program:
 ### Dependencies
 
 - Python 3.5
-- Matplotlib 1.5.1
+- Matplotlib 2.0.2
 - Numpy 1.11.0
 
 You'll need these 3 packages at a minimum; I forget if matplotlib or numpy install other things that they themselves need, but I'm sure they'll tell you.
