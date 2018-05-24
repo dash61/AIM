@@ -27,6 +27,7 @@ To use the program:
 - Select the algorithm.
 - Hit the "Run Selected Algorithm" button (or hit RETURN).
 
+
 ### Dependencies
 
 - Python 3.5

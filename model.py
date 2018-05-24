@@ -10,7 +10,6 @@ import math
 import datetime
 from datetime import datetime as dt
 from tkinter import messagebox  # use Tkinter for python 2, tkinter for python 3
-from matplotlib.finance import quotes_historical_yahoo_ochl
 import numpy as np
 import algorithms.algo1
 import algorithms.algo2
@@ -134,10 +133,6 @@ class Model():
                 list1.reverse()
                 self.quotes = [[self.convertStringDateToOrdinal(x[0]), float(x[4])] for x in list1] # grab and convert date; grab closing price
                 return [q[1] for q in self.quotes]
-            else:
-                return quotes_historical_yahoo_ochl(self.str_stock_symbol, start_date, end_date) # get stock data!
-                self.quotes = self.getStockDataFromInternet(self.start_date, self.endDate)
-                return [q[2] for q in self.quotes]
         except Exception as e:
             messagebox.showerror("ERROR", "Could not get data from the Internet; bad stock symbol?\n\n" + str(e) + ".")
             return
