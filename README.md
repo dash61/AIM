@@ -14,6 +14,9 @@ There is a help button that brings up a multi-tabbed help dialog with more speci
 
 ## Screenshot
 
+This shows some really advanced usage after I had moved from stocks to altcoins and had changed the interface somewhat to customize it for my purposes.
+
+
 ![screenshot](https://i.imgur.com/Gzj7DU6.png)
 
 
