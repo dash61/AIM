@@ -12,6 +12,10 @@ It splits each algorithm out into it's own file (algo1.py through algo4.py). The
 
 There is a help button that brings up a multi-tabbed help dialog with more specific information.
 
+## Screenshot
+
+![screenshot](https://i.imgur.com/Gzj7DU6.png)
+
 
 ### Basic Usage
 
